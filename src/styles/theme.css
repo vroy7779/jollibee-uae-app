@@ -1,0 +1,223 @@
+/*
+ * Jollibee UAE design tokens.
+ * Screens use only the tokens declared here: no raw hex values, no Tailwind palette colours.
+ * The reasoning behind each choice is in guidelines/Guidelines.md.
+ */
+
+@theme {
+  /* Typeface */
+  --font-sans: "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Colour: the page itself is cream, so even an empty screen carries the brand's warmth */
+  --color-bg: #fff8ea;
+  --color-surface: #ffffff;
+  --color-sunken: #f8ecd4;
+  --color-line: #f0e2c6;
+  --color-line-strong: #8f867d;
+  --color-ink: #1e1a18;
+  --color-ink-2: #57504a;
+  --color-ink-3: #6b625b;
+  --color-ink-disabled: #b5ada6;
+
+  /* Brand: red leads (headers, actions), yellow answers it (rewards, highlights), orange is the third voice */
+  --color-brand: #e31837;
+  --color-brand-pressed: #c41330;
+  /* Red as small text sits on tinted backgrounds, so it uses the darker step to stay above 4.5:1 */
+  --color-brand-text: #c41330;
+  --color-brand-subtle: #fdecee;
+  --color-brand-deep: #a80f26;
+  --color-reward: #ffc629;
+  --color-reward-subtle: #fff1c9;
+  --color-zest: #f47b20;
+  --color-zest-text: #b8440a;
+  --color-zest-subtle: #ffe8d6;
+
+  /* Semantic */
+  --color-success: #1e7b45;
+  --color-success-subtle: #dff3e6;
+  --color-warning: #8a5300;
+  --color-warning-subtle: #fdf0d5;
+  --color-error: #b4121f;
+  --color-error-subtle: #fdecee;
+
+  /* Type scale (size / line height). Roles: xs caption, sm body small, base body, lg h3, xl h2, 2xl h1, 3xl display */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.125rem;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.375rem;
+  --text-lg: 1.0625rem;
+  --text-lg--line-height: 1.5rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.625rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.875rem;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 2.25rem;
+
+  /* Radius: sm for tags, md for controls, lg for containers. Full is only for avatars, switches and steppers */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 24px;
+
+  /* Elevation: cards lift slightly off the cream page; float is for sheets, dialogs, toasts and nudges */
+  --shadow-card: 0 1px 2px rgb(140 70 20 / 0.06), 0 8px 20px -10px rgb(140 70 20 / 0.22);
+  --shadow-float: 0 12px 32px -8px rgb(30 26 24 / 0.28), 0 2px 6px rgb(30 26 24 / 0.08);
+
+  /* The bundled shadcn primitives read these names; they resolve to the tokens above */
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-sunken);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-sunken);
+  --color-muted-foreground: var(--color-ink-3);
+  --color-accent: var(--color-sunken);
+  --color-accent-foreground: var(--color-ink);
+  --color-destructive: var(--color-error);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--color-line);
+  --color-input: var(--color-line);
+  --color-input-background: var(--color-sunken);
+  --color-switch-background: var(--color-line-strong);
+  --color-ring: var(--color-ink);
+}
+
+/* Brand surfaces. These two gradients are the only ones in the app. */
+@utility bg-brand-gradient {
+  background-image: linear-gradient(140deg, var(--color-brand) 0%, var(--color-brand-deep) 100%);
+}
+@utility bg-sunrise {
+  background-image: linear-gradient(120deg, var(--color-reward) 0%, var(--color-zest) 100%);
+}
+
+/* Motion. Every animation is short, runs once (except float and ping) and is disabled under reduced-motion. */
+@keyframes screen-in { from { opacity: 0; transform: translateX(28px); } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes sheet-up { from { transform: translateY(100%); } }
+@keyframes pop { 0% { opacity: 0; transform: scale(0.8); } 60% { transform: scale(1.06); } }
+@keyframes drop { from { opacity: 0; transform: translateY(-120%); } }
+@keyframes bump { 35% { transform: scale(1.035); } }
+@keyframes grow-x { from { transform: scaleX(0); } }
+@keyframes float { 50% { transform: translateY(-10px) scale(1.04); } }
+@keyframes ping-soft { 0% { transform: scale(1); opacity: 0.55; } 100% { transform: scale(1.9); opacity: 0; } }
+@keyframes burst { 0% { opacity: 1; transform: translate(0, 0) scale(0.4); } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1); } }
+
+@utility anim-screen { animation: screen-in 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+@utility anim-rise { animation: rise 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+@utility anim-fade { animation: fade-in 0.2s ease-out backwards; }
+@utility anim-sheet { animation: sheet-up 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+@utility anim-pop { animation: pop 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+@utility anim-drop { animation: drop 0.4s cubic-bezier(0.2, 0.9, 0.2, 1.1) backwards; }
+@utility anim-bump { animation: bump 0.32s ease-out; }
+@utility anim-grow { transform-origin: left; animation: grow-x 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s backwards; }
+@utility anim-float { animation: float 7s ease-in-out infinite; }
+@utility anim-ping { animation: ping-soft 1.6s ease-out infinite; }
+@utility anim-burst { animation: burst 0.8s cubic-bezier(0.1, 0.8, 0.2, 1) 0.2s both; }
+
+/* Children arrive one after another instead of all at once */
+@layer components {
+  .stagger > * { animation: rise 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  .stagger > *:nth-child(2) { animation-delay: 0.06s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.12s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.18s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.24s; }
+  .stagger > *:nth-child(n + 6) { animation-delay: 0.3s; }
+
+  /* Tactile press on every tappable thing */
+  button:not(:disabled) { transition: transform 0.12s ease-out, background-color 0.15s, color 0.15s, border-color 0.15s; }
+  button:not(:disabled):active { transform: scale(0.97); }
+}
+
+/* Type roles that carry weight and tracking as well as size */
+@utility t-display {
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+@utility t-h1 {
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+@utility t-h2 {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+@utility t-h3 {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+}
+@utility t-label {
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+@utility t-num {
+  font-variant-numeric: tabular-nums;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    background-color: var(--color-sunken);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* One focus treatment for every interactive element */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  /* One icon weight across the app */
+  .lucide {
+    stroke-width: 1.75;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

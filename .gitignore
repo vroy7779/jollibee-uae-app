@@ -1,0 +1,6 @@
+node_modules
+dist
+.DS_Store
+*.local
+# Local snapshot taken before the redesign; not part of the project
+src-before-redesign.tgz

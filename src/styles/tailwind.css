@@ -1,0 +1,8 @@
+@import 'tailwindcss' source(none);
+@source '../**/*.{js,ts,jsx,tsx}';
+
+@import 'tw-animate-css';
+
+body {
+  background-color: #F5F5F5;
+}
