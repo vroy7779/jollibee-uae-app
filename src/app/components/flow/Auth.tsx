@@ -43,7 +43,7 @@ export function SignupScreen({ onDone, onLogin }: { onDone: () => void; onLogin:
   };
 
   return (
-    <div className="relative flex h-full flex-col bg-bg">
+    <div className="relative flex h-full flex-col bg-surface">
       <TopBar title="Create your account" left={<IconButton icon={ChevronLeft} label="Back" onClick={onLogin} />} />
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <Card className="bg-reward-subtle px-4 py-3 text-sm">Earn 50 Joy Points instantly on signup</Card>
@@ -101,7 +101,7 @@ export function OnboardingScreen({ onDone, onUseDifferentAccount }: { onDone: ()
   };
 
   return (
-    <div className="relative flex h-full flex-col bg-bg">
+    <div className="relative flex h-full flex-col bg-surface">
       <TopBar title="A few more details" />
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <p className="text-sm text-ink-2">Help us tailor offers and surprise you on your special days.</p>

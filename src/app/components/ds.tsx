@@ -249,6 +249,7 @@ export function Segmented<T extends string>({
   onChange,
   label,
   onBrand,
+  wide,
 }: {
   options: { id: T; label: string }[];
   value: T;
@@ -256,9 +257,11 @@ export function Segmented<T extends string>({
   label?: string;
   /** Use on red surfaces: the track goes translucent and the selected segment white. */
   onBrand?: boolean;
+  /** Fill the available width with equal segments. */
+  wide?: boolean;
 }) {
   return (
-    <div role="radiogroup" aria-label={label} className={cx("inline-flex max-w-full gap-1 overflow-x-auto rounded-md p-1", onBrand ? "bg-brand-deep" : "bg-sunken")}>
+    <div role="radiogroup" aria-label={label} className={cx("max-w-full gap-1 overflow-x-auto rounded-md p-1", wide ? "flex w-full" : "inline-flex", onBrand ? "bg-brand-deep" : "bg-sunken")}>
       {options.map((o) => (
         <button
           key={o.id}
@@ -266,7 +269,8 @@ export function Segmented<T extends string>({
           aria-checked={value === o.id}
           onClick={() => onChange(o.id)}
           className={cx(
-            "h-8 whitespace-nowrap rounded-sm px-4 text-sm font-semibold",
+            "whitespace-nowrap rounded-sm px-4 text-sm font-semibold",
+            wide ? "h-10 flex-1" : "h-8",
             value === o.id
               ? onBrand ? "bg-surface text-brand-text" : "bg-brand text-white"
               : onBrand ? "text-white" : "text-ink-2",

@@ -24,6 +24,9 @@ const storesList: StoreInfo[] = [
   { name: "Jollibee Mirdif City Centre", shortName: "Mirdif Centre - Shop 56", address: "Mirdif City Centre, Mirdif", distance: "15.2 km", hours: "Opens at 10:00 AM", phone: "+971 4 567 8901", lat: 25.2165, lng: 55.4076, openNow: false, facilities: ["Dine In"] },
 ];
 
+/** Phone number of a store, looked up by the short name saved on an order. */
+export const storePhone = (shortName: string) => storesList.find((s) => s.shortName === shortName)?.phone;
+
 // Bounds of the schematic map. A real map needs a Maps key, which the shipped app also leaves empty.
 const BOUNDS = { west: 55.04, east: 55.48, south: 24.99, north: 25.37 };
 const pinPos = (s: StoreInfo) => ({

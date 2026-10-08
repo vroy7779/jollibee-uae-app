@@ -58,16 +58,16 @@ export function CartScreen({ onBrowseMenu }: { onBrowseMenu: () => void }) {
       right={<Link className="px-2" onClick={() => setDiscard(true)}>Remove all</Link>}
       footer={<Button onClick={checkout}>Checkout · {aed(cartSubtotal)}</Button>}
     >
-      <Section title="Store">
+      <Section title="Your order is">
         <Card className="p-4">
-          <div className="mb-3 flex items-center gap-3">
+          <Segmented
+            wide label="Order mode" value={orderMode} onChange={setOrderMode}
+            options={[{ id: "dine-in", label: "Dine In" }, { id: "take-away", label: "Take Away" }]}
+          />
+          <div className="mt-3 flex items-center gap-3">
             <p className="min-w-0 flex-1 truncate font-semibold">{selectedStore || "No store selected"}</p>
             <Link onClick={() => push("stores")}>{selectedStore ? "Change" : "Select Store"}</Link>
           </div>
-          <Segmented
-            label="Order mode" value={orderMode} onChange={setOrderMode}
-            options={[{ id: "dine-in", label: "Dine In" }, { id: "take-away", label: "Take Away" }]}
-          />
         </Card>
       </Section>
 

@@ -262,7 +262,7 @@ const FAQ = [
   { q: "Can I cancel an order?", a: "Orders can be cancelled within 60 seconds of placement. After that, please call the store directly via the Stores screen." },
   { q: "Why was my card declined?", a: "Payments are processed securely by Network International (UAE). A decline usually comes from your bank — try a different method or contact your bank." },
   { q: "How do I change my phone number?", a: "Personal Info screen lets you edit your phone. We will send an OTP to the new number to verify before the change takes effect." },
-  { q: "When are my points credited?", a: "Points will land in your wallet once the order is delivered. For in-store purchases, scan the QR code on your receipt." },
+  { q: "When are my points credited?", a: "Points aren't added instantly. They're credited to your wallet a short period after your order. For in-store purchases, scan the QR code on your receipt." },
 ];
 
 export function HelpSupportScreen() {

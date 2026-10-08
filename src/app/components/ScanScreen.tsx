@@ -1,13 +1,13 @@
 import { CreditCard, Drumstick, ReceiptText, Settings, Wallet } from "lucide-react";
 import qrCodeImage from "figma:asset/97dd81fe8cc84d302f898bf2918ce0676cff190f.png";
-import { aed, fmtDate, POINT_VALUE, REWARD_GOAL, useApp } from "../store";
+import { aed, fmtDate, REWARD_GOAL, useApp } from "../store";
 import { Button, Card, CountUp, HeaderGlow, Row } from "./ds";
 
 export function ScanScreen({ onOpenProfile }: { onOpenProfile?: () => void }) {
-  const { points, profile, push } = useApp();
+  const { points, moneyWallet, profile, push } = useApp();
   const stats = [
-    { icon: Wallet, value: <CountUp value={points} />, label: "total points" },
-    { icon: CreditCard, value: aed(points * POINT_VALUE), label: "at checkout" },
+    { icon: Wallet, value: <CountUp value={points} />, label: "Joy Points" },
+    { icon: CreditCard, value: aed(moneyWallet), label: "Money Wallet" },
     { icon: Drumstick, value: Math.floor(points / REWARD_GOAL.points), label: `free ${REWARD_GOAL.name}` },
   ];
 
@@ -46,7 +46,7 @@ export function ScanScreen({ onOpenProfile }: { onOpenProfile?: () => void }) {
           <p className="text-center text-xs text-ink-3">1 pt = AED 0.05 · {REWARD_GOAL.points} pts = 1 free {REWARD_GOAL.name}</p>
         </Card>
 
-        <Button onClick={() => push("myGiftCards")}>Load gift card to wallet</Button>
+        <Button onClick={() => push("myGiftCards")}>Load gift card to Money Wallet</Button>
 
         <Card className="bg-reward-subtle">
           <Row icon={ReceiptText} tint="reward" label="Got a receipt?" sub="Scan the QR code on your receipt to claim your points" onClick={() => push("receiptScan")} />

@@ -4,7 +4,7 @@ import { useApp } from "../store";
 import { categories, products, type Product } from "../menu";
 import { useAddProduct } from "./flow/ItemDetail";
 import { ProductTile } from "./ProductRow";
-import { Badge, Button, Empty, HeaderGlow } from "./ds";
+import { Badge, Button, Empty, HeaderGlow, Segmented } from "./ds";
 
 interface OrderScreenProps {
   onNavigate?: (tab: "stores") => void;
@@ -14,7 +14,7 @@ const FAVORITES = "My Favorites";
 const POPULAR = "Most Ordered";
 
 export function OrderScreen({ onNavigate }: OrderScreenProps) {
-  const { selectedStore, cart, favorites, toggleFavorite, push } = useApp();
+  const { selectedStore, cart, favorites, toggleFavorite, orderMode, setOrderMode, push } = useApp();
   const addProduct = useAddProduct();
   const tabs = [FAVORITES, POPULAR, ...categories];
   const [tab, setTab] = useState(favorites.length > 0 ? FAVORITES : POPULAR);
@@ -36,6 +36,13 @@ export function OrderScreen({ onNavigate }: OrderScreenProps) {
       {/* Store in the title, order history on the left: the menu always says where you are ordering from */}
       <div className="relative overflow-hidden bg-brand-gradient px-2 pb-3 pt-6 text-white">
         <HeaderGlow />
+        {/* How you're eating comes first: it is the first decision of the order and follows it to the end */}
+        <div className="relative px-2 pb-2">
+          <Segmented
+            wide onBrand label="Order mode" value={orderMode} onChange={setOrderMode}
+            options={[{ id: "dine-in", label: "Dine In" }, { id: "take-away", label: "Take Away" }]}
+          />
+        </div>
         <div className="relative flex items-center">
           <button onClick={() => push("orderHistory")} aria-label="Order History" className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white/15">
             <History className="h-5 w-5" />

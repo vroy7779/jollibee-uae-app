@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowDownLeft, ArrowUpRight, Check, Copy, Gift, Milestone, Star, Tag } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Check, Gift, Milestone, Star, Tag, Wallet } from "lucide-react";
 import { aed, COUPONS, fmtDate, POINT_VALUE, tierFor, TIERS, useApp, type PointsTx } from "../../store";
 import { Badge, Button, Card, CountUp, Empty, HeaderGlow, IconChip, Link, Progress, Row, ScreenShell, Section, Segmented, TierMark } from "../ds";
 
@@ -34,7 +34,7 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
 }
 
 export function WalletScreen({ onStartOrdering }: { onStartOrdering: () => void }) {
-  const { points, bonusPoints, lifetimePoints, pointsTx, push } = useApp();
+  const { points, bonusPoints, lifetimePoints, pointsTx, moneyWallet, walletTx, push } = useApp();
   const tier = tierFor(lifetimePoints);
 
   return (
@@ -44,12 +44,34 @@ export function WalletScreen({ onStartOrdering }: { onStartOrdering: () => void 
         <div className="relative">
           <p className="text-sm">Current balance</p>
           <p className="text-5xl font-bold leading-none tracking-tight"><CountUp value={points} /> <span className="text-xl font-semibold text-reward">pts</span></p>
-          <p className="t-num mt-2 font-semibold">≈ {aed(points * POINT_VALUE)} at checkout</p>
+          <p className="t-num mt-2 font-semibold">Joy Points · worth {aed(points * POINT_VALUE)} at checkout</p>
           <p className="mt-1 text-xs">1 pt = AED 0.05. Rates updated by Jolli HQ.</p>
         </div>
       </div>
 
-      <Section>
+      {/* Money is kept apart from points: it is an AED balance, loaded from gift cards */}
+      <Section title="Money Wallet" action={<Link onClick={() => push("myGiftCards")}>Load a gift card</Link>}>
+        <Card>
+          <div className="flex items-center gap-3 p-4">
+            <IconChip icon={Wallet} tint="accent" size="lg" />
+            <div className="min-w-0 flex-1">
+              <p className="t-h2 t-num">{aed(moneyWallet)}</p>
+              <p className="text-sm text-ink-3">Pay with it at checkout, on its own or with Joy Points</p>
+            </div>
+          </div>
+          {walletTx.slice(0, 3).map((t) => (
+            <div key={t.id} className="flex items-center justify-between gap-3 border-t border-line px-4 py-3">
+              <div className="min-w-0">
+                <p className="truncate font-medium">{t.label}</p>
+                <p className="text-sm text-ink-3">{fmtDate(t.date)}</p>
+              </div>
+              <span className={`t-num font-semibold ${t.amount >= 0 ? "text-success" : "text-brand-text"}`}>{t.amount >= 0 ? "+" : "−"}{aed(Math.abs(t.amount))}</span>
+            </div>
+          ))}
+        </Card>
+      </Section>
+
+      <Section title="Joy Points">
         <Card className="grid grid-cols-3 divide-x divide-line">
           <Stat label="Bonus" value={`${bonusPoints} pts`} />
           <Stat label="Lifetime" value={lifetimePoints.toLocaleString()} />
@@ -61,7 +83,7 @@ export function WalletScreen({ onStartOrdering }: { onStartOrdering: () => void 
         <Card>
           <Row icon={Milestone} tint="accent" label="My Tier Journey" value={tier.name} onClick={() => push("tierJourney")} />
           <Row icon={Star} tint="reward" label="Tier Benefits" onClick={() => push("tierBenefits")} />
-          <Row icon={Gift} tint="brand" label="Gift Cards" sub="Load a card's balance as points" onClick={() => push("giftCards")} />
+          <Row icon={Gift} tint="brand" label="Gift Cards" sub="Send one, or load one into your Money Wallet" onClick={() => push("giftCards")} />
           <Row icon={Tag} tint="success" label="Coupons" onClick={() => push("coupons")} />
         </Card>
       </Section>
@@ -199,26 +221,26 @@ export function TierJourneyScreen({ onStartOrdering }: { onStartOrdering: () => 
 }
 
 export function CouponsScreen() {
-  const { showToast } = useApp();
+  const { showToast, savedCoupon, setSavedCoupon, cartCount, push } = useApp();
   const [kind, setKind] = useState<"all" | "percent" | "amount" | "freeItem">("all");
   const shown = COUPONS.filter((c) => kind === "all" || c.kind === kind);
   const badge = (c: (typeof COUPONS)[number]) =>
     c.kind === "percent" ? `${c.value}% OFF` : c.kind === "amount" ? `AED ${c.value} OFF` : "FREE ITEM";
 
-  const copy = (code: string) => {
-    navigator.clipboard?.writeText(code).catch(() => {});
-    showToast(`${code} copied`);
+  const apply = (code: string) => {
+    setSavedCoupon(code);
+    showToast(`${code} will be applied at checkout`);
   };
 
   return (
-    <ScreenShell title="Coupons">
+    <ScreenShell title="Coupons" footer={savedCoupon && cartCount > 0 ? <Button onClick={() => push("cart")}>Go to cart</Button> : undefined}>
       {COUPONS.length === 0 ? (
         <Empty icon={Tag} title="No offers right now" body="Check back soon for fresh deals." />
       ) : (
         <>
           <div className="px-4 pt-4">
             <Segmented label="Filter offers" value={kind} onChange={setKind} options={[{ id: "all", label: "All" }, { id: "percent", label: "% off" }, { id: "amount", label: "AED off" }, { id: "freeItem", label: "Free item" }]} />
-            <p className="mt-3 text-sm text-ink-2">Enter a code at checkout to apply it.</p>
+            <p className="mt-3 text-sm text-ink-2">Apply a coupon here and it's used on your next order. One coupon per order.</p>
           </div>
           <div key={kind} className="stagger space-y-3 p-4">
             {shown.length === 0 && <Empty icon={Tag} title="No offers in this category" />}
@@ -230,9 +252,17 @@ export function CouponsScreen() {
                   <p className="text-sm text-ink-3">
                     Min order {aed(c.minOrder)}{c.maxDiscount ? ` · up to ${aed(c.maxDiscount)}` : ""} · until {fmtDate(c.validTill)}
                   </p>
-                  <Button variant="secondary" size="sm" fit className="mt-2 border-dashed" onClick={() => copy(c.code)} aria-label={`Copy code ${c.code}`}>
-                    <span className="font-mono">{c.code}</span> <Copy className="h-4 w-4" />
-                  </Button>
+                  <div className="mt-2 flex items-center gap-3">
+                    <span className="font-mono text-sm font-semibold text-ink-2">{c.code}</span>
+                    {savedCoupon === c.code ? (
+                      <>
+                        <Badge tone="success">Applied</Badge>
+                        <Link onClick={() => setSavedCoupon(null)} aria-label={`Remove ${c.code}`}>Remove</Link>
+                      </>
+                    ) : (
+                      <Button variant="secondary" size="sm" fit onClick={() => apply(c.code)} aria-label={`Apply ${c.code}`}>Apply</Button>
+                    )}
+                  </div>
                 </div>
               </Card>
             ))}

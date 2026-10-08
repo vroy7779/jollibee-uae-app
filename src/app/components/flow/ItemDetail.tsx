@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
+import { X } from "lucide-react";
 import { aed, useApp } from "../../store";
 import { descriptionFor, modifierGroupsFor, productById, type ModifierGroup, type Product } from "../../menu";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
-import { Badge, Button, Card, Choice, Empty, ScreenShell, Section, Stepper } from "../ds";
+import { Badge, Button, Card, Choice, Empty, IconButton, Section, Stepper } from "../ds";
 
 // Every add-to-cart entry point goes through here so the "store first" rule holds everywhere.
 export function useAddProduct() {
@@ -42,7 +43,7 @@ export function ItemDetailScreen({ params }: { params: { productId: number; line
   const [showMissing, setShowMissing] = useState(false);
   const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  if (!product) return <ScreenShell title="Menu item"><Empty title="We couldn't find what you're looking for." /></ScreenShell>;
+  if (!product) return <Drawer label="Menu item" onClose={pop}><div className="pt-10"><Empty title="We couldn't find what you're looking for." /></div></Drawer>;
 
   const toggle = (g: ModifierGroup, name: string) =>
     setPicked((prev) => {
@@ -117,8 +118,7 @@ export function ItemDetailScreen({ params }: { params: { productId: number; line
   };
 
   return (
-    <ScreenShell
-      title="Menu item"
+    <Drawer label={product.name} onClose={pop}
       footer={
         <div className="flex items-center gap-3">
           <Stepper qty={qty} onDec={() => setQty((q) => Math.max(1, q - 1))} onInc={() => setQty((q) => q + 1)} />
@@ -128,10 +128,10 @@ export function ItemDetailScreen({ params }: { params: { productId: number; line
         </div>
       }
     >
-      <div className="h-52 bg-sunken">
-        <ImageWithFallback src={product.img} alt={product.name} className="anim-fade h-full w-full object-cover" />
+      <div className="h-44 bg-sunken">
+        <ImageWithFallback src={product.img} alt={product.name} className="h-full w-full object-cover" />
       </div>
-      <div className="anim-rise relative -mt-4 rounded-t-xl bg-surface px-4 py-4 shadow-card">
+      <div className="relative -mt-4 rounded-t-xl bg-surface px-4 py-4 shadow-card">
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="t-h2">{product.name}</h2>
           <span className="t-num t-h2 whitespace-nowrap text-brand-text">{aed(product.price)}</span>
@@ -144,6 +144,21 @@ export function ItemDetailScreen({ params }: { params: { productId: number; line
       {renderGroups("modifier", "Make it yours")}
       {renderGroups("addon", "Add-ons")}
       <div className="h-6" />
-    </ScreenShell>
+    </Drawer>
+  );
+}
+
+/** Bottom drawer: slides up over the screen it was opened from, which stays visible behind it. */
+function Drawer({ label, onClose, footer, children }: { label: string; onClose: () => void; footer?: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <div className="absolute inset-0 z-[70] flex flex-col justify-end">
+      <button aria-label="Close" className="anim-fade absolute inset-0 bg-ink/50 active:!transform-none" onClick={onClose} />
+      <div role="dialog" aria-label={label} className="anim-sheet relative flex max-h-[90%] flex-col overflow-hidden rounded-t-xl bg-bg shadow-float">
+        <span aria-hidden className="absolute left-1/2 top-2 z-10 h-1 w-10 -translate-x-1/2 rounded-full bg-white/90 shadow-card" />
+        <IconButton icon={X} label="Close" onClick={onClose} className="absolute right-3 top-3 z-10 !rounded-full bg-surface shadow-card" />
+        <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
+        {footer && <div className="border-t border-line bg-surface px-4 py-3">{footer}</div>}
+      </div>
+    </div>
   );
 }
