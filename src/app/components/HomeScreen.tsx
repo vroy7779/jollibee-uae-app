@@ -1,17 +1,20 @@
-import { Bell, ChevronRight, Drumstick, Gift, QrCode, ReceiptText, Store, Tag, User, Wallet } from "lucide-react";
+import { Bell, ChevronRight, Drumstick, Gift, QrCode, ReceiptText, Store, Tag, Wallet } from "lucide-react";
 import beeSaucyImage from "figma:asset/741e8721b35727ec171377a8647e08ad0d6427d1.png";
 import sweetPotatoImage from "figma:asset/8b002bbaa9e75770608605b17601fddda67e8c36.png";
 import sportingEventImage from "figma:asset/c767842c64f67737b8437d5659d51b2e52bfadcd.png";
+import mascot from "../../assets/jollibee-mascot.png";
 import { REWARD_GOAL, useApp } from "../store";
 import { products } from "../menu";
 import { useAddProduct } from "./flow/ItemDetail";
 import { ProductRow } from "./ProductRow";
-import { Badge, Button, Card, CountUp, HeaderGlow, IconChip, Link, Progress, Section, Thumb, type Tint } from "./ds";
+import { Badge, Button, Card, CountUp, IconChip, Link, Progress, Section, Thumb, type Tint } from "./ds";
 
 interface HomeScreenProps {
   onProfileClick?: () => void;
   onNavigate?: (tab: "order" | "scan" | "stores") => void;
 }
+
+const HERO_PHOTO = "https://images.unsplash.com/photo-1672856399624-61b47d70d339?auto=format&fit=crop&w=800&q=60";
 
 const greeting = () => {
   const h = new Date().getHours();
@@ -36,13 +39,18 @@ export function HomeScreen({ onProfileClick, onNavigate }: HomeScreenProps) {
   ];
 
   return (
-    <div className="min-h-full bg-bg pb-6">
-      {/* Red header: greeting, balance, and the three things people come here to do */}
-      <div className="relative overflow-hidden rounded-b-xl bg-brand-gradient px-4 pb-5 pt-6 text-white">
-        <HeaderGlow />
+    <div className="min-h-full bg-surface pb-6">
+      {/* Red header over a faint food photo: logo, greeting, and the three things people come here to do */}
+      <div className="relative overflow-hidden rounded-b-xl bg-brand px-4 pb-5 pt-6 text-white">
+        <img src={HERO_PHOTO} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
+        <span aria-hidden className="absolute inset-0 bg-brand/90" />
         <div className="relative">
-          <div className="flex items-center gap-1">
-            <p className="min-w-0 flex-1 truncate font-medium">{greeting()}, {profile.firstName}</p>
+          <div className="flex items-center gap-2">
+            <img src={mascot} alt="Jollibee" className="h-12 w-12 flex-shrink-0 [filter:drop-shadow(1px_0_0_white)_drop-shadow(-1px_0_0_white)_drop-shadow(0_1px_0_white)_drop-shadow(0_-1px_0_white)]" />
+            <p className="min-w-0 flex-1 leading-tight">
+              <span className="block text-sm">{greeting()}</span>
+              <span className="block truncate text-lg font-bold">{profile.firstName}</span>
+            </p>
             <button
               onClick={() => push("notifications")}
               aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : "Notifications"}
@@ -55,15 +63,15 @@ export function HomeScreen({ onProfileClick, onNavigate }: HomeScreenProps) {
                 </span>
               )}
             </button>
-            <button onClick={onProfileClick} aria-label="Open profile" className="ml-1 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 hover:bg-white/25">
-              <User className="h-5 w-5" />
+            <button onClick={onProfileClick} aria-label="Open profile" className="ml-1 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 font-bold hover:bg-white/25">
+              {profile.firstName.charAt(0).toUpperCase()}
             </button>
           </div>
 
-          <p className="t-h2 mt-1">{toReward > 0 ? "Time to earn some points" : "Your free treat is ready"}</p>
+          <p className="t-h2 mt-4">{toReward > 0 ? "Time to earn some points" : "Your free treat is ready"}</p>
 
           <div className="stagger mt-4 grid grid-cols-3 gap-3">
-            <button onClick={() => onNavigate?.(selectedStore ? "order" : "stores")} aria-label="Order" className="flex h-24 flex-col items-center justify-center gap-2 rounded-lg bg-reward text-ink shadow-card hover:bg-zest">
+            <button onClick={() => onNavigate?.(selectedStore ? "order" : "stores")} aria-label="Order" className="flex h-24 flex-col items-center justify-center gap-2 rounded-lg bg-brand-deep text-white shadow-card hover:bg-brand-pressed">
               <Drumstick className="h-7 w-7" />
               <span className="text-sm font-bold">Order</span>
             </button>
