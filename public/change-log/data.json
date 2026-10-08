@@ -1,0 +1,166 @@
+{
+  "updatedAt": "2026-10-08T10:05:16.285Z",
+  "items": [
+    {
+      "id": "1.1",
+      "section": "1. Login / Authentication",
+      "update": "The yellow base background makes text hard to read, especially while typing. We'd suggest a white base, with yellow only as an accent if needed.",
+      "status": "In progress",
+      "comment": ""
+    },
+    {
+      "id": "1.2",
+      "section": "1. Login / Authentication",
+      "update": "Vaibhav, was there a specific reason for the yellow (e.g. contrast), because the this makes a shift in all the screens?",
+      "status": "In progress",
+      "comment": ""
+    },
+    {
+      "id": "1.3",
+      "section": "1. Login / Authentication",
+      "update": "On the main login screen, we need to have UI which can support email+password or the mobile otp flow, but new UI looks confusing.",
+      "status": "In progress",
+      "comment": ""
+    },
+    {
+      "id": "2.1",
+      "section": "2. Home",
+      "update": "Show large point balances in short form (e.g. 11,965 → 11.9K) so the layout doesn't break as balances grow.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "2.2",
+      "section": "2. Home",
+      "update": "\"X points away from next tier\" isn't visible. Please also add text for users already on the top tier (Platinum).",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "2.3",
+      "section": "2. Home",
+      "update": "The card and border style feels dated and heavy. Please simplify it to reduce information overload.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "2.4",
+      "section": "2. Home",
+      "update": "Overall existing built screen looks better.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "3.1",
+      "section": "3. Menu and Item Selection",
+      "update": "The Dine-in / Takeaway choice should be the first thing on the screen, and should carry through the whole order.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "3.2",
+      "section": "3. Menu and Item Selection",
+      "update": "Detail screen for each item is fine, just that it should be bottom drawer.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "4.1",
+      "section": "4. Cart / Checkout",
+      "update": "Promo codes: instead of a text box with an Apply button, list the available coupons, each with its own Apply button. Grey out coupons that don't apply to the current order.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "4.2",
+      "section": "4. Cart / Checkout",
+      "update": "Free-item coupons: applying the coupon unlocks the free item, and the user then adds it to the cart.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "4.3",
+      "section": "4. Cart / Checkout",
+      "update": "Joy Points: uses a slider instead of a text box, which also avoids invalid entries. The slider's maximum is the amount left to pay after discounts, not the full points balance.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "4.4",
+      "section": "4. Cart / Checkout",
+      "update": "Gift card → Money Wallet: show Joy Points and the Money Wallet as separate sections.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "4.5",
+      "section": "4. Cart / Checkout",
+      "update": "Keep discounts and payment separate: coupons and promo codes reduce the order total first (e.g. 27 → 20). Points, wallet and card then pay the rest, and combining them should be supported.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "4.6",
+      "section": "4. Cart / Checkout",
+      "update": "Points cover the full amount: if points cover the whole order, place the order directly and skip the payment step.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "5.1",
+      "section": "5. Payments",
+      "update": "We'd like Apple Pay and Samsung Pay integrated natively in the app, not only through the payment gateway's page. We need to check feasibility and effort.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "6.1",
+      "section": "6. After Placing an Order",
+      "update": "Token number: show the store's token number first, as soon as the order is placed, linked to the order ID. Keep it visible afterwards (e.g. a small banner) so the customer knows which number to collect.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "6.2",
+      "section": "6. After Placing an Order",
+      "update": "Status tracker: a multi-step tracker (Placed → Preparing → Ready → Delivered) isn't needed for now, since QSR orders are ready in about 5–7 minutes. We can add it later if Aloha can send status updates.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "6.3",
+      "section": "6. After Placing an Order",
+      "update": "Points earned: points aren't credited instantly. Show a message such as \"Points will be credited after a certain period.\"",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "7.1",
+      "section": "7. Order Receipt",
+      "update": "The new layout (subtotal, discounts, total, status) works well and needs only minor refinements.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "7.2",
+      "section": "7. Order Receipt",
+      "update": "Keep the \"Need help with this order?\" option, with call/contact.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "8.1",
+      "section": "8. Gift Cards",
+      "update": "The flow is mostly fine. Please add templates (e.g. Birthday, Congratulations) and transaction history.",
+      "status": "Done",
+      "comment": ""
+    },
+    {
+      "id": "8.2",
+      "section": "8. Gift Cards",
+      "update": "We need to remove the old flow of card number + pin, as now the gift card with entitled to user's id directly.",
+      "status": "Done",
+      "comment": ""
+    }
+  ]
+}
